@@ -3,10 +3,10 @@ import cv2
 from geometry import Canvas
 
 materials = (
-    ('Metal', 0.1, 0.4, 0.6, 100.0),
-    ('Wood', 0.5, 0.6, 0.4, 10.0),
-    ('Chalk', 0.8, 0.9, 0.01, 25.0),
-    ('Plastic', 0.045, 0.9, 0.2, 50.0),
+    {'name': 'Metal', 'ka': 0.1, 'kd': 0.4, 'ks': 0.6, 'n': 100.0},
+    {'name': 'Wood', 'ka': 0.5, 'kd': 0.6, 'ks': 0.4, 'n': 10.0},
+    {'name': 'Chalk', 'ka': 0.8, 'kd': 0.9, 'ks': 0.01, 'n': 25.0},
+    {'name': 'Plastic', 'ka': 0.45, 'kd': 0.9, 'ks': 0.2, 'n': 50.0},
 )
 
 
@@ -17,7 +17,10 @@ def main():
     spotlight = 1.0
 
     while True:
-        cv2.imshow('asd', canvas.get_image(materials[material_i], lighting, spotlight))
+        cv2.imshow(
+            'Phong Shading',
+            canvas.get_image(materials[material_i], lighting, spotlight)
+        )
         k = cv2.waitKey(0)
 
         if k == 83:
