@@ -8,18 +8,20 @@ class Canvas:
         self.width = 2 * radius
         self.height = 2 * radius
 
-        # Observer
+        # Source of light
         self.l_x = 720
         self.l_y = -720
         self.l_z = 320
 
-        # Source of light
+        # Observer
         self.v_x = 0
         self.v_y = 0
         self.v_z = 640
 
-    def get_image(self, material_dict, ia, ii):
-        points = full((self.width, self.height, 1), 1.0)
+        self.n_l = full((self.width, self.height, 1), 0.0)
+        self.r_v = full((self.width, self.height, 1), 0.0)
+
+        # Calculate vector scalar products for each hemisphere point (N o L) and (R o V)
         for i_x in range(self.width):
             for i_y in range(self.height):
 
@@ -30,11 +32,6 @@ class Canvas:
                 # Check if point inside circle
                 if x ** 2 + y ** 2 > self.radius ** 2:
                     continue
-                name = material_dict['name']
-                ka = material_dict['ka']
-                kd = material_dict['kd']
-                ks = material_dict['ks']
-                n = material_dict['n']
 
                 z = (self.radius ** 2 - x ** 2 - y ** 2) ** 0.5
 
@@ -52,17 +49,38 @@ class Canvas:
                 v_l = (v_x ** 2 + v_y ** 2 + v_z ** 2) ** 0.5
                 vector_v = [*map(lambda l: (l / v_l), [v_x, v_y, v_z])]
 
-                n_l = vector_n[0] * vector_l[0] + vector_n[1] * vector_l[1] + vector_n[2] * vector_l[2]
+                self.n_l[i_x][i_y] = vector_n[0] * vector_l[0] + vector_n[1] * vector_l[1] + vector_n[2] * vector_l[2]
 
                 vector_r = [
-                    vector_l[0] - 2 * (vector_n[0] * n_l),
-                    vector_l[1] - 2 * (vector_n[1] * n_l),
-                    vector_l[2] - 2 * (vector_n[2] * n_l),
+                    vector_l[0] - 2 * (vector_n[0] * self.n_l[i_x][i_y]),
+                    vector_l[1] - 2 * (vector_n[1] * self.n_l[i_x][i_y]),
+                    vector_l[2] - 2 * (vector_n[2] * self.n_l[i_x][i_y]),
                 ]
 
-                r_v = vector_r[0] * vector_v[0] + vector_r[1] * vector_v[1] + vector_r[2] * vector_v[2]
+                self.r_v[i_x][i_y] = vector_r[0] * vector_v[0] + vector_r[1] * vector_v[1] + vector_r[2] * vector_v[2]
 
-                points[i_x][i_y] = (ka * ia + ii * (kd * n_l + ks * (r_v ** n)))
+    def get_image(self, material_dict, ia, ii):
+        points = full((self.width, self.height, 1), 1.0)
+
+        name = material_dict['name']
+        ka = material_dict['ka']
+        kd = material_dict['kd']
+        ks = material_dict['ks']
+        n = material_dict['n']
+
+        for i_x in range(self.width):
+            for i_y in range(self.height):
+
+                # Real position
+                x = i_x - self.radius
+                y = -i_y + self.radius
+
+                # Check if point inside circle
+                if x ** 2 + y ** 2 > self.radius ** 2:
+                    continue
+
+                points[i_x][i_y] = (ka * ia + ii * (kd * self.n_l[i_x][i_y] + ks * (self.r_v[i_x][i_y] ** n)))
+
                 cv2.putText(
                     points,
                     name,
