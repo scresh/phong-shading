@@ -73,7 +73,7 @@ class Canvas:
 
                 # Real position
                 x = i_x - self.radius
-                y = -i_y + self.radius
+                y = self.radius - i_y
 
                 # Check if point inside circle
                 if x ** 2 + y ** 2 > self.radius ** 2:
@@ -81,14 +81,14 @@ class Canvas:
 
                 points[i_x][i_y] = (ka * ia + ii * (kd * self.n_l[i_x][i_y] + ks * (self.r_v[i_x][i_y] ** n)))
 
-                cv2.putText(
-                    points,
-                    name,
-                    (int(self.width / 48), int(self.height / 24)),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    1 / 640 * self.width,
-                    (0, 0, 0),
-                    1
-                )
+        cv2.putText(
+            points,
+            name,
+            (int(self.width / 48), int(self.height / 24)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1 / 640 * self.width,
+            (0, 0, 0),
+            1
+        )
 
         return points
