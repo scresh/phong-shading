@@ -51,9 +51,9 @@ class Canvas:
 
                 self.n_l[i_x][i_y] = vector_n[0] * vector_l[0] + vector_n[1] * vector_l[1] + vector_n[2] * vector_l[2]
 
-                r_x = vector_l[0] - 2 * (vector_n[0] * self.n_l[i_x][i_y])
-                r_y = vector_l[1] - 2 * (vector_n[1] * self.n_l[i_x][i_y])
-                r_z = vector_l[2] - 2 * (vector_n[2] * self.n_l[i_x][i_y])
+                r_x = 2 * (vector_n[0] * self.n_l[i_x][i_y]) - vector_l[0]
+                r_y = 2 * (vector_n[1] * self.n_l[i_x][i_y]) - vector_l[1]
+                r_z = 2 * (vector_n[2] * self.n_l[i_x][i_y]) - vector_l[2]
                 r_l = (r_x ** 2 + r_y ** 2 + r_z ** 2) ** 0.5
                 vector_r = [*map(lambda l: (l / r_l), [r_x, r_y, r_z])]
 

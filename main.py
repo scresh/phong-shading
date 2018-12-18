@@ -3,10 +3,10 @@ import cv2
 from geometry import Canvas
 
 materials = (
-    {'name': 'Metal', 'ka': 0.1, 'kd': 0.4, 'ks': 0.6, 'n': 100.0},
-    {'name': 'Wood', 'ka': 0.5, 'kd': 0.6, 'ks': 0.4, 'n': 10.0},
-    {'name': 'Chalk', 'ka': 0.8, 'kd': 0.9, 'ks': 0.01, 'n': 25.0},
-    {'name': 'Plastic', 'ka': 0.45, 'kd': 0.9, 'ks': 0.2, 'n': 50.0},
+    {'name': 'Metal', 'ka': 0.1, 'kd': 0.4, 'ks': 0.6, 'n': 101.0},
+    {'name': 'Wood', 'ka': 0.5, 'kd': 0.6, 'ks': 0.4, 'n': 11.0},
+    {'name': 'Chalk', 'ka': 0.8, 'kd': 0.9, 'ks': 0.01, 'n': 26.0},
+    {'name': 'Plastic', 'ka': 0.45, 'kd': 0.9, 'ks': 0.2, 'n': 51.0},
 )
 
 
