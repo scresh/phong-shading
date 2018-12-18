@@ -51,11 +51,11 @@ class Canvas:
 
                 self.n_l[i_x][i_y] = vector_n[0] * vector_l[0] + vector_n[1] * vector_l[1] + vector_n[2] * vector_l[2]
 
-                vector_r = [
-                    vector_l[0] - 2 * (vector_n[0] * self.n_l[i_x][i_y]),
-                    vector_l[1] - 2 * (vector_n[1] * self.n_l[i_x][i_y]),
-                    vector_l[2] - 2 * (vector_n[2] * self.n_l[i_x][i_y]),
-                ]
+                r_x = vector_l[0] - 2 * (vector_n[0] * self.n_l[i_x][i_y])
+                r_y = vector_l[1] - 2 * (vector_n[1] * self.n_l[i_x][i_y])
+                r_z = vector_l[2] - 2 * (vector_n[2] * self.n_l[i_x][i_y])
+                r_l = (r_x ** 2 + r_y ** 2 + r_z ** 2) ** 0.5
+                vector_r = [*map(lambda l: (l / r_l), [r_x, r_y, r_z])]
 
                 self.r_v[i_x][i_y] = vector_r[0] * vector_v[0] + vector_r[1] * vector_v[1] + vector_r[2] * vector_v[2]
 
@@ -79,7 +79,7 @@ class Canvas:
                 if x ** 2 + y ** 2 > self.radius ** 2:
                     continue
 
-                points[i_x][i_y] = (ka * ia + ii * (kd * self.n_l[i_x][i_y] + ks * (self.r_v[i_x][i_y] ** n)))
+                points[i_x][i_y] = ka * ia + ii * (kd * self.n_l[i_x][i_y] + ks * (self.r_v[i_x][i_y] ** n))
 
         cv2.putText(
             points,
